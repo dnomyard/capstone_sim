@@ -4,7 +4,9 @@ import numpy
 from random import randint
 
 class Application(tk.Frame):
-
+    """
+    Station class is used to define end stations in maaru simulation
+    """
     class Station():
     
         def __init__(self, x, y):
