@@ -130,6 +130,8 @@ class Application(tk.Frame):
 
 if __name__ == "__main__":
     app = Application(800, 600)
+    #app.master.title('Maaru Simulator')
+    app.addStations()
     app.run_sim()
     app.mainloop()
 
