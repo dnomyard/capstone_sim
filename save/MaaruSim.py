@@ -26,9 +26,8 @@ class MaaruSim(tk.Frame):
             point_a = numpy.array((self.x, self.y))
             point_b = numpy.array((copter.x, copter.y))
             distance = numpy.sqrt(numpy.sum((point_a - point_b)**2))
-            # RSSI = inverse distance with scaling factor (1/4 * PI * R^2)
-            #r = int(1/distance * 100000)
-            rssi = int(500000000/(4 * numpy.pi * distance * distance))
+            # RSSI = inverse distance
+            rssi = int(1/distance * 100000)
             return rssi
 
         def setStationRssiThreshold(self, rssi_val):
@@ -60,11 +59,11 @@ class MaaruSim(tk.Frame):
         self.thresholdMet = False
         self.flag = True
         # random starting location
-        start_x = randint(100, self.max_x - 100)
-        start_y = randint(100, self.max_y - 100)
+        #start_x = randint(100, self.max_x - 100)
+        #start_y = randint(100, self.max_y - 100)
 
-        #start_x = 100
-        #start_y = 100
+        start_x = 100
+        start_y = 100
         
         # create quadcopter object
         maaru = self.Copter(start_x, start_y)
@@ -186,7 +185,7 @@ class MaaruSim(tk.Frame):
             print "moveToWaypoint: invalid value for y: " + str(y)
             return
 
-        # Calculate initial change in x, y based on direction
+        # Calculate initial change in x, y based on waypoint direction
         # to waypoint.
         x_offset = x - self.maaru.x
         y_offset = y - self.maaru.y
@@ -197,36 +196,16 @@ class MaaruSim(tk.Frame):
         print 'x ' + str(x)
         print 'y ' + str(y)
 
-
-        if abs(x_offset) >= abs(y_offset):
-        
-            print("HERE")
-            slope = float(y_offset)/float(x_offset)
+        slope = float(y_offset)/float(x_offset)
             
-            print "slope: " + str(slope)
+        print "slope: " + str(slope)
         
-            # initialize change in x, y
-            if x > self.maaru.x:            
-                dx = float(2)
-            else:
-                dx = float(-2)
-            dy = float(dx * slope)
-
+        # initialize change in x, y
+        if x > self.maaru.x:            
+            dx = float(2)
         else:
-            slope = float(x_offset)/float(y_offset)
-            
-            print "slope: " + str(slope)
-        
-            # initialize change in x, y
-            if y > self.maaru.y:            
-                dy = float(2)
-            else:
-                dy = float(-2)
-            dx = float(dy * slope)
-        
-
-
-
+            dx = float(-2)
+        dy = float(dx * slope)
         print "dx: " + str(dx) + "    dy: " + str(dy)
 
         self.flag = True

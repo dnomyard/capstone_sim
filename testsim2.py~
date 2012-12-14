@@ -7,7 +7,7 @@ def main():
     # In your actual code, you will need to set a local variable for the
     # RSSI threshhold and then check the threshhold values in your 'main loop'
     # This method was just easier for this simulation . . .
-    testsim.setRssiThresholds(220)
+    testsim.setRssiThresholds(200)
     
     x, y = testsim.getLocation()
     print "Starting location: " + str(x) + ", " + str(y)
@@ -23,7 +23,16 @@ def main():
 
         # This very simple algorith simply moves to what I know is the 
         # center of the map!
-        testsim.moveToWaypoint(500, 325)
+
+        testsim.moveToWaypoint(x-50, y-50)
+        
+        testsim.moveToWaypoint(x+50, y-50)
+        
+        testsim.moveToWaypoint(x+50, y+50)
+        
+        testsim.moveToWaypoint(x-50, y+50)
+
+#	testsim.moveToWaypoint(x-50, y-50)
 
         
     # This line simply keeps the GUI up after the simulated copter stops

@@ -1,8 +1,8 @@
 #!/usr/bin/python
-import MaaruSim
+import NewMaaruSim
 
 def main():
-    testsim = MaaruSim.MaaruSim(1000, 650)
+    testsim = NewMaaruSim.NewMaaruSim(1000, 650)
     
     # In your actual code, you will need to set a local variable for the
     # RSSI threshhold and then check the threshhold values in your 'main loop'
