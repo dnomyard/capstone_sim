@@ -95,10 +95,14 @@ class MaaruSim(tk.Frame):
         self.s2.setStationRssiThreshold(threshold)
 
     def checkThresholdMet(self):
+        # thresholdMet is a Boolean - True if RSSI values are above threshold; False if not
+        #   This value is set in False in __init__() and set to true in moveToWaypoint()
         return self.thresholdMet
 
     def randomTest(self):
-    
+        # This test procedure has the copter flying around the cavnas and bouncing
+        #   off walls.  It will stop if RSSI thresholds are met.
+
         # initialize change in x, y
         dx = 2
         dy = 3
@@ -108,6 +112,8 @@ class MaaruSim(tk.Frame):
         y0 = self.maaru.y - 40
         y1 = self.maaru.y + 40
 
+        # self.flag is a Boolean; set to True in __init__(); set to False when 
+        #   RSSI thresholds are met.
         while self.flag:
             # update maaru location
             self.canvas.move('maaru', dx, dy)
@@ -142,7 +148,16 @@ class MaaruSim(tk.Frame):
                 self.flag = False
 
 
+    # function: moveToWaypoint
+    # description: moves copter to x/y values provided
     def moveToWaypoint(self, x, y):
+        if x <= 0 or x >= self.max_x:
+            print "moveToWaypoint: invalid value for x: " + str(x)
+            return
+
+        if  y <= 0 or y >= self.max_y:
+            print "moveToWaypoint: invalid value for y: " + str(y)
+            return
 
         #calculate initial change in x, y based on waypoint dir and dist
         x_offset = x - self.maaru.x
@@ -175,7 +190,7 @@ class MaaruSim(tk.Frame):
 
             deltaX = self.maaru.x - x
             deltaY = self.maaru.y - y
-            print "deltaX, deltaY: " + str(deltaX) + ", " + str(deltaY)
+            # print "deltaX, deltaY: " + str(deltaX) + ", " + str(deltaY)
             if (deltaX < 2 and deltaX > -2) and (deltaY < 2 and deltaY > -2):
                 print "Arrived at waypoint: " + str(x) + ", " + str(y)
                 self.flag = False             
