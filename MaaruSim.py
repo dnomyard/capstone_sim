@@ -3,40 +3,54 @@ import Tkinter as tk
 import numpy
 from random import randint
 
+
 class MaaruSim(tk.Frame):
     """
-    Station class is used to define end stations in maaru simulation
+    MarruSim class extends tk.Frame for GUI
     """
     
     class Station():
-    
+        """
+        Station class is used to define end stations in maaru simulation.
+        """
         def __init__(self, x, y):
+            """ Constructor sets initial x,y location for end stations. """
             self.x = x
             self.y = y
         
-        
         def getRssi(self, copter):
+            """ 
+            RSSI is simulated using inverse distance from station to copter.
+            """
+            # Calculate distance between copter and end station.
             point_a = numpy.array((self.x, self.y))
             point_b = numpy.array((copter.x, copter.y))
-            
             distance = numpy.sqrt(numpy.sum((point_a - point_b)**2))
-            
+            # RSSI = inverse distance
             rssi = int(1/distance * 100000)
             return rssi
 
         def setStationRssiThreshold(self, rssi_val):
+            """ Sets RSSI threshold for end station. """
             self.rssi_thresh = rssi_val
-            
         
     class Copter():
+        """ Used to maintain x, y location of copter. """
+        
         def __init__(self, x, y):
+            """ Initialize x, y location of copter. """
             self.x = x
             self.y = y
 
+        def getLocation(self):
+            """ Returns current location of copter. """
+            return self.x, self.y
+            
 
     def __init__(self, max_x, max_y, master=None):
-    
-  
+        """
+        Initilize simulation GUI using tk
+        """
         tk.Frame.__init__(self, master)
         self.max_x = max_x
         self.max_y = max_y
@@ -61,6 +75,7 @@ class MaaruSim(tk.Frame):
         self.addStations()
 		
     def createWidgets(self):
+        """ Create canvas and buttons on tk frame. """
         self.canvas = tk.Canvas(self, width = self.max_x, height = self.max_y, background='white')
         self.canvas.pack()
         self.canvas.grid()
@@ -69,18 +84,20 @@ class MaaruSim(tk.Frame):
         self.quitButton.grid()
 
     def quit(self):
+        """ Flag boolean is used to stop simulation. """
         self.flag = False
         tk.Frame.quit(self)
 
     def addStations(self):
-        # size of stations
+        """ Create end stations and place on canvas. """
+        # size of stations in pixels
         edge = 20
-        # station 1: left of canvas
+        # station 1: left side of of canvas
         s1 = self.Station(100, self.max_y/2)
         station1 = self.canvas.create_rectangle(s1.x, s1.y, (s1.x + edge), (s1.y + edge), fill="red", tag='station1')
         self.text1 = self.canvas.create_text(s1.x + 5, s1.y + 32, tag = "rssi1_label")
         
-        # station 2: bottom of canvas
+        # station 2: right side of canvas
         s2 = self.Station(self.max_x - 100, self.max_y/2)
         station2 = self.canvas.create_rectangle(s2.x, s2.y, (s2.x + edge), (s2.y + edge), fill="green", tag='station2')
         self.text2 = self.canvas.create_text(s2.x + 5, s2.y +32, tag = "rssi2_label")
@@ -88,32 +105,38 @@ class MaaruSim(tk.Frame):
         self.s1 = s1
         self.s2 = s2
 
-
     def setRssiThresholds(self, threshold):
+        """ Set RSSI thresholds for both end stations. """
         # for now, assuming same RSSI threshold for both stations
         self.s1.setStationRssiThreshold(threshold)
         self.s2.setStationRssiThreshold(threshold)
 
     def checkThresholdMet(self):
+        """ 
+        Return value of Boolean, which is set when RSSI threshold is met.
+        """
         # thresholdMet is a Boolean - True if RSSI values are above threshold; False if not
         #   This value is set in False in __init__() and set to true in moveToWaypoint()
         return self.thresholdMet
 
     def randomTest(self):
-        # This test procedure has the copter flying around the cavnas and bouncing
-        #   off walls.  It will stop if RSSI thresholds are met.
-
+        """ 
+        Test procedure has the copter flying around the canvas and 
+        bouncing off walls.  It will stop if RSSI thresholds are met.
+        """
         # initialize change in x, y
         dx = 2
         dy = 3
-        # initialize boundaries of maaru for wall bouncing
+        # Initialize boundaries of maaru (x, y is center of copter, so
+        # offsets are used to bounce edge of copter off of borders of
+        # canvas instead of bouncing at the middle.
         x0 = self.maaru.x - 40
         x1 = self.maaru.x + 40
         y0 = self.maaru.y - 40
         y1 = self.maaru.y + 40
 
-        # self.flag is a Boolean; set to True in __init__(); set to False when 
-        #   RSSI thresholds are met.
+        # self.flag is a Boolean; set to True in __init__(); 
+        # set to False when RSSI thresholds are met.
         while self.flag:
             # update maaru location
             self.canvas.move('maaru', dx, dy)
@@ -141,16 +164,19 @@ class MaaruSim(tk.Frame):
             x1 += dx
             y0 += dy
             y1 += dy
-             
 
+            # When RSSI values are met for both end stations, change
+            # value of "quit" flag to False to stop copter.
             if rssi1 > self.s1.rssi_thresh and rssi2 > self.s2.rssi_thresh:
                 print "Threshold met"
                 self.flag = False
 
+    def getLocation(self):
+        """ Returns current x, y location of copter. """
+        return self.maaru.getLocation()
 
-    # function: moveToWaypoint
-    # description: moves copter to x/y values provided
     def moveToWaypoint(self, x, y):
+        """ Moves copter to x/y values provided. """
         if x <= 0 or x >= self.max_x:
             print "moveToWaypoint: invalid value for x: " + str(x)
             return
@@ -159,7 +185,8 @@ class MaaruSim(tk.Frame):
             print "moveToWaypoint: invalid value for y: " + str(y)
             return
 
-        #calculate initial change in x, y based on waypoint dir and dist
+        # Calculate initial change in x, y based on waypoint direction
+        # to waypoint.
         x_offset = x - self.maaru.x
         y_offset = y - self.maaru.y
 
@@ -175,7 +202,9 @@ class MaaruSim(tk.Frame):
         print "dx: " + str(dx) + "    dy: " + str(dy)
 
         while self.flag:
-            # update maaru location
+            # Update maaru location.  
+            # Here we are going to move toward specified waypoint unitl waypoint
+            # is reached OR RSSI threshold is met.
             self.canvas.move('maaru', dx, dy)
             self.canvas.after(20)
             self.canvas.update()
@@ -199,6 +228,10 @@ class MaaruSim(tk.Frame):
                 self.thresholdMet = True
 
 if __name__ == "__main__":
+    """ 
+    The MarruSim class should be imported and used from an external Python
+    program.  If MaruuSim is executed independently, we simply run randomTest.
+    """
     app = MaaruSim(800, 600)
     app.setRssiThresholds(300)
     app.randomTest()
