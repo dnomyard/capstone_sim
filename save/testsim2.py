@@ -25,18 +25,22 @@ def main():
         # center of the map!
 
         testsim.moveToWaypoint(x-50, y-50)
-        print 'HHHHHHHH'
-        print testsim.checkThresholdMet()
         if testsim.checkThresholdMet():
             break
         
         testsim.moveToWaypoint(x+50, y-50)
+        if testsim.checkThresholdMet():
+            break
         
         testsim.moveToWaypoint(x+50, y+50)
+        if testsim.checkThresholdMet():
+            break
         
         testsim.moveToWaypoint(x-50, y+50)
+        if testsim.checkThresholdMet():
+            break
 
-        # Here's how you get the RSSI values from the two endpoints.
+        # Here's how you get the current RSSI values from the two endpoints.
         s1_rssi = testsim.s1.getRssi(testsim.maaru)
         s2_rssi = testsim.s2.getRssi(testsim.maaru)
 
