@@ -10,6 +10,7 @@ def main():
     # This method was just easier for this simulation . . .
     threshold = 225
     testsim.setRssiThresholds(threshold)
+    shift = 50
     
     x, y = testsim.getLocation()
     print "Starting location: " + str(x) + ", " + str(y)
@@ -31,7 +32,7 @@ def main():
         s2_rssi = testsim.s2.getRssi(testsim.maaru)
         
 # ####
-        testsim.moveToWaypoint(x-25, y-25)
+        testsim.moveToWaypoint(x-shift, y-shift)
         
         topLeft1 = testsim.s1.getRssi(testsim.maaru)
         topLeft2 = testsim.s2.getRssi(testsim.maaru)
@@ -39,8 +40,8 @@ def main():
         print str(topLeft1)
         print str(topLeft2)
         
-        xTL = x-25
-        yTL = y-25
+        xTL = x-shift
+        yTL = y-shift
         
         if topLeft1 >= topLeft2:
             topLeftValue = topLeft2
@@ -53,7 +54,7 @@ def main():
         print "topLeftValue "+str(topLeftValue)
                 
 # ####
-        testsim.moveToWaypoint(x, y-25)
+        testsim.moveToWaypoint(x, y-shift)
         
         topMiddle1 = testsim.s1.getRssi(testsim.maaru)
         topMiddle2 = testsim.s2.getRssi(testsim.maaru)
@@ -62,7 +63,7 @@ def main():
         print str(topMiddle2)
         
         xTM = x
-        yTM = y-25
+        yTM = y-shift
         
         if topMiddle1 >= topMiddle2:
             topMiddleValue = topMiddle2
@@ -75,7 +76,7 @@ def main():
         print "topMiddleValue "+str(topMiddleValue)
  
 # ####        
-        testsim.moveToWaypoint(x+25, y-25)
+        testsim.moveToWaypoint(x+shift, y-shift)
         
         topRight1 = testsim.s1.getRssi(testsim.maaru)
         topRight2 = testsim.s2.getRssi(testsim.maaru)
@@ -83,8 +84,8 @@ def main():
         print str(topRight1)
         print str(topRight2)
         
-        xTR = x+25
-        yTR = y-25
+        xTR = x+shift
+        yTR = y-shift
         
         if topRight1 >= topRight2:
             topRightValue = topRight2
@@ -97,7 +98,7 @@ def main():
         print "topRightValue "+str(topRightValue)
                         
 # ####
-        testsim.moveToWaypoint(x+25, y)
+        testsim.moveToWaypoint(x+shift, y)
         
         rightMiddle1 = testsim.s1.getRssi(testsim.maaru)
         rightMiddle2 = testsim.s2.getRssi(testsim.maaru)
@@ -105,7 +106,7 @@ def main():
         print str(rightMiddle1)
         print str(rightMiddle2)
         
-        xRM = x+25
+        xRM = x+shift
         yRM = y
         
         if rightMiddle1 >= rightMiddle2:
@@ -119,7 +120,7 @@ def main():
         print "rightMiddleValue "+str(rightMiddleValue)
  
 # ####        
-        testsim.moveToWaypoint(x+25, y+25)
+        testsim.moveToWaypoint(x+shift, y+shift)
         
         bottomRight1 = testsim.s1.getRssi(testsim.maaru)
         bottomRight2 = testsim.s2.getRssi(testsim.maaru)
@@ -127,8 +128,8 @@ def main():
         print str(bottomRight1)
         print str(bottomRight2)
         
-        xBR = x+25
-        yBR = y+25
+        xBR = x+shift
+        yBR = y+shift
         
         if bottomRight1 >= bottomRight2:
             bottomRightValue = bottomRight2
@@ -141,7 +142,7 @@ def main():
         print "bottomRightValue "+str(bottomRightValue)
                         
 # ####
-        testsim.moveToWaypoint(x, y+25)
+        testsim.moveToWaypoint(x, y+shift)
         
         bottomMiddle1 = testsim.s1.getRssi(testsim.maaru)
         bottomMiddle2 = testsim.s2.getRssi(testsim.maaru)
@@ -150,7 +151,7 @@ def main():
         print str(bottomMiddle2)
         
         xBM = x
-        yBM = y+25
+        yBM = y+shift
         
         if bottomMiddle1 >= bottomMiddle2:
             bottomMiddleValue = bottomMiddle2
@@ -163,7 +164,7 @@ def main():
         print "bottomMiddleValue "+str(bottomMiddleValue)
  
 # ####        
-        testsim.moveToWaypoint(x-25, y+25)
+        testsim.moveToWaypoint(x-shift, y+shift)
         
         bottomLeft1 = testsim.s1.getRssi(testsim.maaru)
         bottomLeft2 = testsim.s2.getRssi(testsim.maaru)
@@ -171,8 +172,8 @@ def main():
         print str(bottomLeft1)
         print str(bottomLeft2)
         
-        xBL = x-25
-        yBL = y+25
+        xBL = x-shift
+        yBL = y+shift
         
         if bottomLeft1 >= bottomLeft2:
             bottomLeftValue = bottomLeft2
@@ -186,7 +187,7 @@ def main():
         
                         
 # ####
-        testsim.moveToWaypoint(x-25, y)
+        testsim.moveToWaypoint(x-shift, y)
         
         leftMiddle1 = testsim.s1.getRssi(testsim.maaru)
         leftMiddle2 = testsim.s2.getRssi(testsim.maaru)
@@ -194,7 +195,7 @@ def main():
         print str(leftMiddle1)
         print str(leftMiddle2)
         
-        xLM = x-25
+        xLM = x-shift
         yLM = y
         
         if leftMiddle1 >= leftMiddle2:
