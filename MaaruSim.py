@@ -83,7 +83,7 @@ class MaaruSim(tk.Frame):
         # quit button not working - TODO
         # self.quitButton = tk.Button(self, text='Quit', command=self.quit)
         # self.quitButton.grid()
-        self.resetButton = tk.Button(self, text='Restart', command=self.restart)
+        self.resetButton = tk.Button(self, text='Reset', command=self.restart)
         self.resetButton.grid()
         
     def quit(self):
