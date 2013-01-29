@@ -10,7 +10,7 @@ def main():
     # This method was just easier for this simulation . . .
     threshold = 225
     testsim.setRssiThresholds(threshold)
-    shift = 50
+    shift = 75
     
     x, y = testsim.getLocation()
     print "Starting location: " + str(x) + ", " + str(y)

@@ -2,7 +2,7 @@
 import Tkinter as tk
 import numpy
 from random import randint
-
+import sys, os
 
 class MaaruSim(tk.Frame):
     """
@@ -81,14 +81,23 @@ class MaaruSim(tk.Frame):
         self.canvas.pack()
         self.canvas.grid()
         # quit button not working - TODO
-        self.quitButton = tk.Button(self, text='Quit', command=self.quit)
-        self.quitButton.grid()
-
+        # self.quitButton = tk.Button(self, text='Quit', command=self.quit)
+        # self.quitButton.grid()
+        self.resetButton = tk.Button(self, text='Restart', command=self.restart)
+        self.resetButton.grid()
+        
     def quit(self):
         """ Flag boolean is used to stop simulation. """
         self.flag = False
         tk.Frame.quit(self)
 
+    def restart(self):
+        """Restarts the current program.
+        Note: this function does not return. Any cleanup action (like
+        saving data) must be done before calling this function."""
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
+        
     def addStations(self):
         """ Create end stations and place on canvas. """
         # size of stations in pixels
